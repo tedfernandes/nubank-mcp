@@ -1,0 +1,26 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "nubank-mcp",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-13",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": { "enabled": true },
+  "preview_urls": false,
+
+  // Troque os dois ids pelos seus, criados com:
+  //   npx wrangler kv namespace create CACHE
+  //   npx wrangler kv namespace create OAUTH_KV
+  //
+  // CACHE guarda a resposta do provedor por pouco tempo, para nao bater nele a
+  // cada pergunta. OAUTH_KV precisa ter exatamente esse nome de binding: o
+  // provider de OAuth o procura por nome.
+  "kv_namespaces": [
+    { "binding": "CACHE", "id": "COLOQUE_O_ID_DO_SEU_CACHE" },
+    { "binding": "OAUTH_KV", "id": "COLOQUE_O_ID_DO_SEU_OAUTH_KV" }
+  ]
+
+  // Nenhum segredo vai neste arquivo. Todos entram por:
+  //   npx wrangler secret put <NOME>
+  // PROVEDOR_CLIENT_ID, PROVEDOR_CLIENT_SECRET, CONEXAO_PJ, CONEXAO_PF,
+  // TOKEN_DE_ACESSO e, se usar webhook, WEBHOOK_SEGREDO.
+}

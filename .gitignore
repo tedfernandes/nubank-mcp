@@ -1,0 +1,8 @@
+node_modules/
+.wrangler/
+dist/
+
+# segredo nunca entra no git: tudo vai por `wrangler secret put`
+.dev.vars
+.env
+*.local

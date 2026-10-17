@@ -1,0 +1,15 @@
+# Copie para .dev.vars (ignorado pelo git) para rodar `npm run dev` local.
+# Em producao nada disto fica em arquivo: use `npx wrangler secret put <NOME>`.
+
+PROVEDOR_CLIENT_ID="o client id do app criado no agregador"
+PROVEDOR_CLIENT_SECRET="o client secret do mesmo app"
+
+# Uma conexao por conta. Pode usar so uma das duas.
+CONEXAO_PJ="uuid da conexao da conta PJ"
+CONEXAO_PF="uuid da conexao da conta PF"
+
+# Frase que autoriza o acesso: a mesma no Bearer e na tela de consentimento.
+TOKEN_DE_ACESSO="uma frase longa e aleatoria, 64 caracteres"
+
+# Opcional: so se registrar o webhook de coleta.
+WEBHOOK_SEGREDO="outra frase aleatoria"

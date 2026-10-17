@@ -1,0 +1,26 @@
+{
+  "name": "nubank-mcp",
+  "version": "1.0.0",
+  "description": "Servidor MCP remoto, somente leitura, que liga a conta do Nubank ao claude.ai por Open Finance",
+  "license": "MIT",
+  "private": false,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "verificar": "tsc --noEmit && wrangler deploy --dry-run --outdir .wrangler/dry-run"
+  },
+  "keywords": ["mcp", "model-context-protocol", "nubank", "open-finance", "cloudflare-workers", "claude"],
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260911.1",
+    "typescript": "^5.9.3",
+    "wrangler": "^4.131.1"
+  },
+  "dependencies": {
+    "@cloudflare/workers-oauth-provider": "^0.10.3",
+    "@modelcontextprotocol/server": "^2.0.0",
+    "agents": "^0.23.0",
+    "zod": "^4.6.4"
+  }
+}
