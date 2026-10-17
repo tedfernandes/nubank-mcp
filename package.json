@@ -6,12 +6,20 @@
   "private": false,
   "type": "module",
   "scripts": {
+    "configurar": "node configurar.mjs",
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
     "typecheck": "tsc --noEmit",
     "verificar": "tsc --noEmit && wrangler deploy --dry-run --outdir .wrangler/dry-run"
   },
-  "keywords": ["mcp", "model-context-protocol", "nubank", "open-finance", "cloudflare-workers", "claude"],
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "nubank",
+    "open-finance",
+    "cloudflare-workers",
+    "claude"
+  ],
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20260911.1",
     "typescript": "^5.9.3",
@@ -22,5 +30,12 @@
     "@modelcontextprotocol/server": "^2.0.0",
     "agents": "^0.23.0",
     "zod": "^4.6.4"
-  }
+  },
+  "files": [
+    "src",
+    "configurar.mjs",
+    "wrangler.jsonc",
+    "README.md",
+    "LICENSE"
+  ]
 }
