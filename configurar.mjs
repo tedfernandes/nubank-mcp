@@ -58,6 +58,37 @@ function perguntar(texto, { escondido = false } = {}) {
   });
 }
 
+/** Poe o texto na area de transferencia. Falhar aqui nao atrapalha nada. */
+function copiar(texto) {
+  const cmd =
+    process.platform === "win32"
+      ? ["clip", []]
+      : process.platform === "darwin"
+        ? ["pbcopy", []]
+        : ["xclip", ["-selection", "clipboard"]];
+  try {
+    const r = spawnSync(cmd[0], cmd[1], { input: texto, shell: process.platform === "win32" });
+    return r.status === 0;
+  } catch {
+    return false;
+  }
+}
+
+/** Abre a pagina no navegador padrao, sem derrubar o instalador se nao der. */
+function abrirNavegador(endereco) {
+  const cmd =
+    process.platform === "win32"
+      ? ["cmd", ["/c", "start", "", endereco]]
+      : process.platform === "darwin"
+        ? ["open", [endereco]]
+        : ["xdg-open", [endereco]];
+  try {
+    spawn(cmd[0], cmd[1], { detached: true, stdio: "ignore" }).unref();
+  } catch {
+    /* segue sem abrir: o endereco esta impresso acima */
+  }
+}
+
 /** Aceita o id cru ou a URL inteira copiada do painel. */
 function extrairId(valor) {
   const m = String(valor).match(UUID);
@@ -189,18 +220,28 @@ async function main() {
     console.log(cor.aviso(`  atencao: /health respondeu ${JSON.stringify(saude)}`));
   }
 
+  // O endereco vai para a area de transferencia porque e a unica coisa que a
+  // pessoa precisa colar na proxima tela, e digitar na mao erra facil.
+  const copiado = copiar(`${url}/mcp`);
+
   console.log(cor.titulo("Pronto. Falta so ligar no claude.ai:"));
   console.log(`
-  1. claude.ai  ->  Configuracoes  ->  Conectores  ->  Adicionar conector personalizado
-  2. Endereco:  ${cor.ok(`${url}/mcp`)}
+  1. Adicionar conector personalizado
+  2. Endereco:  ${cor.ok(`${url}/mcp`)}${copiado ? cor.fraco("   (ja copiado para a area de transferencia)") : ""}
   3. Clique em Vincular. Confira que o retorno e claude.ai/api/mcp/auth_callback
   4. Cole esta frase quando for pedida:
 
      ${cor.ok(frase)}
 
   ${cor.fraco("Guarde a frase num gerenciador de senhas: ela nao e mostrada de novo.")}
-  ${cor.fraco("Depois, pergunte na conversa: \"qual meu saldo agora?\"")}
+  ${cor.fraco('Depois, pergunte na conversa: "qual meu saldo agora?"')}
 `);
+
+  const abrir = (await perguntar("  Abrir a pagina de conectores agora? [S/n] ")) || "s";
+  if (/^s/i.test(abrir)) {
+    abrirNavegador("https://claude.ai/settings/connectors");
+    console.log(cor.fraco("  abrindo claude.ai/settings/connectors..."));
+  }
 }
 
 main().catch((e) => {
