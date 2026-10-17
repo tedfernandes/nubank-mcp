@@ -74,11 +74,17 @@ function copiar(texto) {
   }
 }
 
-/** Abre a pagina no navegador padrao, sem derrubar o instalador se nao der. */
+/**
+ * Abre a pagina no navegador padrao, sem derrubar o instalador se nao der.
+ *
+ * O endereco vai entre aspas no Windows de proposito: `&` e `?` sao
+ * metacaracteres do cmd, e uma URL com query string quebraria o comando ao
+ * meio sem erro visivel.
+ */
 function abrirNavegador(endereco) {
   const cmd =
     process.platform === "win32"
-      ? ["cmd", ["/c", "start", "", endereco]]
+      ? ["cmd", ["/c", "start", "", `"${endereco}"`]]
       : process.platform === "darwin"
         ? ["open", [endereco]]
         : ["xdg-open", [endereco]];
